@@ -12,7 +12,7 @@ namespace Moravia.Homework.Interfaces
     /// </summary>
     public interface IDocumentFormat
     {
-        string Serialize(Document document);
-        Document Deserialize(string content);
+        string ConvertFromJson(string content);
+        string ConvertToJson(string content);
     }
 }

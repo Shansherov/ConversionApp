@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConversionApp.Interfaces
+namespace Moravia.Homework.Interfaces
 {
     /// <summary>
     /// Interface for different storage types
