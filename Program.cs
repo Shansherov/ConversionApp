@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.Linq;
+﻿using ConversionApp.auxilliary;
+using ConversionApp.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Moravia.Homework.Interfaces;
 
-namespace Moravia.Homework
+namespace ConversionApp
 {
     class Program
     {
+        /// <summary>
+        /// Main method for the application which handles configuration and application services
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             var logger = LogManager.GetCurrentClassLogger();
@@ -25,7 +25,7 @@ namespace Moravia.Homework
 
             using var servicesProvider = new ServiceCollection()
                 .AddSingleton<IConfiguration>(configuration)
-                .AddSingleton<DocumentStorageService>()
+                .ConfigureServices(configuration)
                 .AddLogging(loggingBuilder =>
                 {
                     loggingBuilder.ClearProviders();
@@ -33,7 +33,12 @@ namespace Moravia.Homework
                     loggingBuilder.AddNLog(configuration);
                 }).BuildServiceProvider();
 
-            var fileStorageService = servicesProvider.GetRequiredService<DocumentStorageService>();
+            var documentService = servicesProvider.GetRequiredService<IDocumentService>();
+
+            // Call ConvertAndSaveDocument method directly using the interface
+            documentService.ConvertAndSaveDocument();
         }
+
+        
     }
 }
